@@ -1,0 +1,36 @@
+html {
+  --primary-color: rgb(32, 126, 66);
+  --primary-color-light: rgb(22 163 74);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Set the custom scrollbar for the whole web application */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color-light) transparent;
+}
+
+/* For WebKit-based browsers (Chrome, Safari, etc.) */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-light);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
+}
+
+#messages {
+  background-image: url("./img/whatsapp-bg-transparent.png");
+}

@@ -1,0 +1,19 @@
+{
+  "name": "js-project-starter",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon --ext js,css,html",
+    "prod": "NODE_ENV=production node app.js"
+  },
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "express": "^4.18.2",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.21",
+    "redis": "^4.6.6",
+    "ws": "^8.13.0"
+  }
+}
