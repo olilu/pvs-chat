@@ -19,6 +19,8 @@ const socket = new WebSocket(backendUrl);
 socket.addEventListener("open", async (event) => {
   console.log("WebSocket connected!");
   // TODO: create message object to transmit the user to the backend
+  const userName = document.getElementById("username").value;
+  socket.send(JSON.stringify({ type: "user", data: userName }));
 });
 
 socket.addEventListener("message", (event) => {
@@ -61,5 +63,18 @@ function changeUsername() {
 
 function sendMessage() {
   // TODO get message from input and send message as object to backend
+    const message = document.getElementById("message").value;
+    socket.send(JSON.stringify({
+        type: "message",
+        data: {
+          username: "oli",
+          message: message,
+          timestamp: new Date()
+        }
+    }));
+    document.getElementById("message").value = "";
+
   socket.send(JSON.stringify(message));
 }
+
+document.getElementById("send-username").addEventListener("click", sendMessage);

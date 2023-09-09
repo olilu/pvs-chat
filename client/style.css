@@ -34,3 +34,7 @@ body {
 #messages {
   background-image: url("./img/whatsapp-bg-transparent.png");
 }
+
+.chat-body {
+  width: 80%;
+}
