@@ -28,9 +28,7 @@ function uuidv4() {
 
 // create default user parameters
 const userUUID = uuidv4()
-console.log(userUUID);
 const userColor = "#" + Math.floor(Math.random()*16777215).toString(16)
-console.log(userColor);
 
 // generate an initial random username
 async function getRandomUser() {
@@ -66,7 +64,6 @@ socket.addEventListener("message", (event) => {
       showParticipants(messageObject.users);
       break;
     case "message":
-      console.log("work on message type message: " + messageObject.data);
       showMessage(messageObject.data);
       break;
     default:
@@ -74,8 +71,9 @@ socket.addEventListener("message", (event) => {
   }
 });
 
+
+// show all chat participants in the participants list
 function showParticipants(users) {
-  // TODO: Show the current users as DOM elements
   const participantsElement = document.getElementById("participants-list");
   participantsElement.innerHTML = "";
   users.forEach((user) => {
@@ -85,16 +83,6 @@ function showParticipants(users) {
     participantElement.innerHTML = htmlParticipant;
     participantsElement.appendChild(participantElement);
   });
-}
-
-function showMessage(message) {
-  console.log("show message")
-  const htmlMessage = generateMessageHTML(message.user, message.timestamp, message.message);
-  const element = document.createElement("li");
-  element.innerHTML = htmlMessage;
-  document.getElementById("chat-messages").appendChild(element);
-  const chatMessages = document.getElementById('chat-container');
-  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function generateParticipantHTML(user) {
@@ -107,8 +95,17 @@ function generateParticipantHTML(user) {
   return html;
 }
 
+function showMessage(message) {
+  console.log("show message")
+  const htmlMessage = generateMessageHTML(message.user, message.timestamp, message.message);
+  const element = document.createElement("li");
+  element.innerHTML = htmlMessage;
+  document.getElementById("chat-messages").appendChild(element);
+  const chatMessages = document.getElementById('chat-container');
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 function generateMessageHTML(user, timestamp, message) {
-  console.log("generate html chat message")
   let formattedTimestamp;
   if (new Date().toLocaleDateString() === new Date(timestamp).toLocaleDateString()) {
       // Same day, include only time

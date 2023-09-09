@@ -49,8 +49,7 @@ const onRedisMessage = async (message) => {
 
 const sendMessageHistory = async (ws) => {
   const historyString = await getMessageHistory(); 
-  console.log("Publishing message history");
-  console.log(historyString);
+  console.log("Send message history to new client");
   const history = JSON.parse(historyString);
   if (!history) return;
   history.forEach((message) => {
@@ -90,7 +89,6 @@ const onConnection = (ws) => {
   ws.on("message", (message) => onClientMessage(ws, message));
   // TODO: Send all connected users and current message history to the new client
   ws.send(JSON.stringify({ type: "ping", data: "FROM SERVER" }));
-  console.log("Sending message history");
   sendMessageHistory(ws);  
 };
 
