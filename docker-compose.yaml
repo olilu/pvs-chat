@@ -6,3 +6,13 @@ services:
     restart: always
     ports:
       - 6379:6379
+  chat:
+    image: olilu/pvs-simple-chat:latest
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
