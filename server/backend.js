@@ -2,9 +2,7 @@ const WebSocket = require("ws");
 const redis = require("redis");
 const expireTimeInSeconds = 15;
 let redisClient;
-
 let clients = [];
-let messageHistory = [];
 
 // Intiiate the websocket server
 const initializeWebsocketServer = async (server) => {
@@ -48,9 +46,8 @@ const onRedisMessage = async (message) => {
 };
 
 const sendMessageHistory = async (ws) => {
-  const historyString = await getMessageHistory(); 
+  const history = await getMessageHistoryArray(); 
   console.log("Send message history to new client");
-  const history = JSON.parse(historyString);
   if (!history) return;
   history.forEach((message) => {
     ws.send(JSON.stringify(message));
@@ -89,6 +86,8 @@ const onConnection = (ws) => {
   ws.on("message", (message) => onClientMessage(ws, message));
   // TODO: Send all connected users and current message history to the new client
   ws.send(JSON.stringify({ type: "ping", data: "FROM SERVER" }));
+  messageHistory = getMessageHistory();
+  console.log("Message history: " + messageHistory);
   sendMessageHistory(ws);  
 };
 
@@ -121,6 +120,7 @@ const onClientMessage = async (ws, message) => {
     case "message":
       // TODO: Publish new message to all connected clients and save in redis
       console.log("Received message from client: " + messageObject.data.message);
+      messageHistory = await getMessageHistoryArray() || [];
       messageHistory.push(messageObject);
       setMessageHistory(JSON.stringify(messageHistory));
       publisher.publish("newMessage", JSON.stringify(messageObject));
@@ -145,6 +145,11 @@ const onClose = async (ws) => {
 
 const getMessageHistory = async () => {
   return await redisClient.get("messageHistory");
+};
+
+const getMessageHistoryArray = async () => {
+  const historyString = await getMessageHistory();
+  return JSON.parse(historyString);
 };
 
 const setMessageHistory = async (messageHistory) => {
